@@ -41,14 +41,16 @@ def plot_trajectory(startx,starty,endx,endy,ax,*args,**kwargs):
         ax.plot(x,y,z,*args,**kwargs)
     return ax
 
-def plot_scatter_2d(x,y,ax,s,*args, **kwargs):
+def plot_scatter_2d(x,y,ax,s,z_dir='z',colors_lst=[],*args, **kwargs):
     '''
     Takes in 2d points X and Y and loops through them creating a Ellipse Patch using the ARGS and KWARGS
     Pass in flip_coords = TRUE if needed since 3d plot x and y are swapped 
     '''
-    for x_i,y_i in zip(x,y):
-        c = patches.Ellipse((x_i,y_i),s*0.68,s*1.05,*args,**kwargs)
+    if len(colors_lst) ==0:
+        colors_lst = ['blue']*len(x) #default
+    for x_i,y_i,color in zip(x,y,colors_lst):
+        c = patches.Ellipse((x_i,y_i),s*0.68,s*1.05,color = color,*args,**kwargs)
         ax.add_patch(c)
-        art3d.pathpatch_2d_to_3d(c, z=0, zdir="z")
+        art3d.pathpatch_2d_to_3d(c, z=0, zdir=z_dir)
     return ax
 
